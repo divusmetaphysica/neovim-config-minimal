@@ -1,6 +1,6 @@
 BUNDLE=.vim/bundle
 FTPLUGIN=.vim/after/ftplugin
-SYMLINKS=CSTYLE=$(FTPLUGIN)/c.vim $(FTPLUGIN)/c++.vim
+CSTYLE=$(FTPLUGIN)/c.vim $(FTPLUGIN)/c++.vim
 PYSTYLE=$(FTPLUGIN)/python.vim
 RUSTSTYLE=$(FTPLUGIN)/rust.vim
 
