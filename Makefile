@@ -1,18 +1,29 @@
+BUNDLE=.vim/bundle
 FTPLUGIN=.vim/after/ftplugin
-DIRS=$(FTPLUGIN)
-SYMLINKS=$(HOME)/.vim $(HOME)/.vimrc
-CSTYLE=$(FTPLUGIN)/c.vim $(FTPLUGIN)/c++.vim
+SYMLINKS=CSTYLE=$(FTPLUGIN)/c.vim $(FTPLUGIN)/c++.vim
 PYSTYLE=$(FTPLUGIN)/python.vim
 RUSTSTYLE=$(FTPLUGIN)/rust.vim
 
-all: $(DIRS) $(SYMLINKS)
-.PHONY: all clean
+all: apt_libs $(BUNDLE) $(BUNDLE)/Vundle.vim plugin_install $(HOME)/.vim $(HOME)/.vimrc
+.PHONY: all apt_libs clean plugin_install
 
-$(DIRS):
-	mkdir -p $@ 
+$(BUNDLE):
+	mkdir -p $(BUNDLE)
 
-$(SYMLINKS):
-	ln -s $(abspath .vim) $@
+$(BUNDLE)/Vundle.vim:
+	git clone git@github.com:VundleVim/Vundle.vim $(BUNDLE)/Vundle.vim
+
+$(HOME)/.vim $(HOME)/.vimrc:
+	ln -s $(abspath .vim) $(HOME)/.vim
+	ln -s $(abspath .vimrc) $(HOME)/.vimrc
+
+apt_libs:
+	sudo apt update
+	sudo apt install build-essential cmake python3-dev
+	sudo apt install clang-7 clang-tidy-7 clang-tools-7 libclang1-7
+
+plugin_install:
+	vim +PluginInstall +PluginUpdate +PluginClean +qall
 
 clean:
 	unlink ~/.vim
@@ -37,7 +48,7 @@ $(RUSTSTYLE):
 	echo "setlocal shiftwidth=2" >> $@
 	echo "setlocal softtabstop=2" >> $@
 
-$(PYSTYLE): 
+$(PYSTYLE):
 	touch $@
 	echo "setlocal expandtab" >> $@
 	echo "setlocal shiftwidth=4" >> $@
