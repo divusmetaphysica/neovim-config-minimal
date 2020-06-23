@@ -95,6 +95,11 @@ nnoremap <F3> :set hlsearch!<CR>
 set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
+augroup AutoSaveFolds
+    autocmd!
+    autocmd BufWinLeave * mkview
+    autocmd BufWinEnter * silent loadview
+augroup END
 
 " Remap help key.
 inoremap <F1> <ESC>:set invfullscreen<CR>a
@@ -121,8 +126,6 @@ map <leader>l :set list!<CR> " Toggle tabs and EOL
 
 " clean trailing whitespace
 autocmd BufWritePre *.py :%s/\s\+$//e
-autocmd BufWritePre *.c :%s/\s\+$//e
-autocmd BufWritePre *.rs :%s/\s\+$//e
 
 " Show EOL type and last modified timestamp, right after the filename
 set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
@@ -151,6 +154,11 @@ endif
 
 " ================= PLUGINS ===================
 
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = '--max-line-length 99'
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = 'npm run lint --'
+
 " Load plugins here (pathogen or vundle)
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin('~/.vim/bundle/')
@@ -162,82 +170,23 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
-
-let g:SimpylFold_docstring_preview=1
-augroup AutoSaveFolds
-    autocmd!
-    autocmd BufWinLeave * mkview
-    autocmd BufWinEnter * silent loadview
-augroup END
 Plugin 'tmhedberg/SimpylFold'
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--max-line-length 99'
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = 'npm run lint --'
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-Plugin 'scrooloose/syntastic'
-
-" autocmd VimEnter * NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-map <C-n> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let g:NERDTreeDirArrowExpandable = '▸'
-let g:NERDTreeDirArrowCollapsible = '▾'
-let NERDTreeIgnore=['\.pyc$', '\~$', '__pycache__'] "ignore files in NERDTree
 Plugin 'scrooloose/nerdtree'
-
-Plugin 'jceb/vim-orgmode'
-Plugin 'JuliaEditorSupport/julia-vim'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'sheerun/vim-polyglot'
+Plugin 'scrooloose/syntastic'
+Plugin 'lifepillar/vim-mucomplete'
+Plugin 'xavierd/clang_complete'
 Plugin 'othree/es.next.syntax.vim'
 Plugin 'othree/jspc.vim'
-
-let g:pymode_python = "python3"
-let g:jedi#popup_on_dot = 0
-let g:jedi#goto_command = "<leader>d"
-let g:jedi#goto_assignments_command = "<leader>g"
-let g:jedi#goto_stubs_command = "<leader>s"
-let g:jedi#goto_definitions_command = ""
-let g:jedi#documentation_command = "K"
-let g:jedi#usages_command = "<leader>n"
-let g:jedi#usages_command = "<C-Space>"
-let g:jedi#rename_command = "<leader>r"
 Plugin 'python-mode/python-mode'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'nvie/vim-flake8'
-
-let g:rustfmt_autosave = 1
-let g:racer_cmd = "~/.cargo/bin/racer"
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
-
-set completeopt-=preview
-set completeopt+=menuone,noselect
-set shortmess+=c  " Shut off completion messages
-set belloff+=ctrlg
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 1
-Plugin 'lifepillar/vim-mucomplete'
-
-let g:clang_library_path = '/usr/lib/llvm-7/lib/libclang-7.so.1'
-let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
-let g:clang_complete_auto = 1
-Plugin 'xavierd/clang_complete'
-
+Plugin 'jceb/vim-orgmode'
+Plugin 'JuliaEditorSupport/julia-vim'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'sheerun/vim-polyglot'
 
 " =========== Themes ============
 Plugin 'icymind/NeoSolarized'
@@ -250,6 +199,54 @@ Plugin 'vim-airline/vim-airline-themes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
+
+let g:SimpylFold_docstring_preview=1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+set completeopt-=preview
+set completeopt+=menuone,noselect
+set shortmess+=c  " Shut off completion messages
+set belloff+=ctrlg
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 1
+
+" autocmd VimEnter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let NERDTreeIgnore=['\.pyc$', '\~$', '__pycache__'] "ignore files in NERDTree
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:pymode_python = "python3"
+let g:jedi#popup_on_dot = 0
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>g"
+let g:jedi#goto_stubs_command = "<leader>s"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#usages_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+
+let g:rustfmt_autosave = 1
+let g:racer_cmd = "~/.cargo/bin/racer"
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
+let g:clang_library_path = '/usr/lib/llvm-7/lib/libclang-7.so.1'
+let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
+let g:clang_complete_auto = 1
 
 colorscheme base16-irblack
 let g:airline_theme='base16'
