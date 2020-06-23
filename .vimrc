@@ -99,6 +99,12 @@ augroup remember_folds
   autocmd BufWinEnter * silent! loadview
 augroup END
 
+augroup AutoSaveFolds
+    autocmd!
+    autocmd BufWinLeave * mkview
+    autocmd BufWinEnter * silent loadview
+augroup END
+
 " Remap help key.
 inoremap <F1> <ESC>:set invfullscreen<CR>a
 nnoremap <F1> :set invfullscreen<CR>
@@ -122,13 +128,6 @@ map <leader>l :set list!<CR> " Toggle tabs and EOL
 
 " clean trailing whitespace
 autocmd BufWritePre *.py :%s/\s\+$//e
-
-" Persist folds
-augroup AutoSaveFolds
-    autocmd!
-    autocmd BufWinLeave * mkview
-    autocmd BufWinEnter * silent loadview
-augroup END
 
 " Show EOL type and last modified timestamp, right after the filename
 set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
