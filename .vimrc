@@ -38,7 +38,7 @@ set smarttab
 set autoindent
 set smartindent
 set noshiftround
-set colorcolumn=110
+set colorcolumn=100
 highlight ColorColumn ctermbg=darkgray
 
 " Cursor motion
@@ -93,16 +93,10 @@ nnoremap <F3> :set hlsearch!<CR>
 set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent! loadview
-augroup END
-
 augroup AutoSaveFolds
     autocmd!
-    autocmd BufWinLeave * mkview
-    autocmd BufWinEnter * silent loadview
+    autocmd BufWinLeave ?* mkview
+    autocmd BufWinEnter ?* silent loadview
 augroup END
 
 " Remap help key.
@@ -121,8 +115,10 @@ map <leader>q gqip
 
 " Visualize tabs and newlines
 set listchars=tab:▸\ ,eol:¬
+
 " Uncomment this to enable by default:
 set list " To enable by default
+
 " Or use your leader key + l to toggle on/off
 map <leader>l :set list!<CR> " Toggle tabs and EOL
 

@@ -1,23 +1,19 @@
 FTPLUGIN=.vim/after/ftplugin
-DIRS=$(FTPLUGIN)
-SYMLINKS=$(HOME)/.vim $(HOME)/.vimrc
 CSTYLE=$(FTPLUGIN)/c.vim $(FTPLUGIN)/c++.vim
 PYSTYLE=$(FTPLUGIN)/python.vim
 RUSTSTYLE=$(FTPLUGIN)/rust.vim
 
-all: $(DIRS) $(SYMLINKS)
+all: ftplugins $(HOME)/.vim $(HOME)/.vimrc
 .PHONY: all clean
 
-$(DIRS):
-	mkdir -p $@ 
-
-$(SYMLINKS):
-	ln -s $(abspath .vim) $@
+$(HOME)/.vim $(HOME)/.vimrc:
+	ln -s $(abspath .vim) $(HOME)/.vim
+	ln -s $(abspath .vimrc) $(HOME)/.vimrc
 
 clean:
-	unlink ~/.vim
+	unlink $(HOME)/.vim
 	rm -fr .vim/
-	unlink ~/.vimrc
+	unlink $(HOME)/.vimrc
 
 langstyles: ftplugins $(CSTYLE) $(RUSTSTYLE) $(PYSTYLE)
 .PHONY: langstyles
