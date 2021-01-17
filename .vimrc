@@ -95,11 +95,11 @@ nnoremap <F3> :set hlsearch!<CR>
 set foldmethod=indent
 set foldlevel=99
 nnoremap <space> za
-augroup AutoSaveFolds
-    autocmd!
-    autocmd BufWinLeave ?* mkview
-    autocmd BufWinEnter ?* silent loadview
-augroup END
+"augroup AutoSaveFolds
+"    autocmd!
+"    autocmd BufWinLeave ?* mkview
+"    autocmd BufWinEnter ?* silent loadview
+"augroup END
 
 " Remap help key.
 inoremap <F1> <ESC>:set invfullscreen<CR>a
@@ -248,5 +248,5 @@ let g:clang_library_path = '/usr/lib/llvm-7/lib/libclang-7.so.1'
 let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
 let g:clang_complete_auto = 1
 
-colorscheme base16-irblack
-let g:airline_theme='base16'
+colorscheme NeoSolarized
+let g:airline_theme='solarized'
