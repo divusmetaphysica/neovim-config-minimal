@@ -161,8 +161,8 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = 'npm run lint --'
 
 " Load plugins here (pathogen or vundle)
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin('~/.vim/bundle/')
+set rtp+=~/.config/nvim/bundle/Vundle.vim
+call vundle#begin('~/.config/nvim/bundle/')
 
 " Let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -185,7 +185,6 @@ Plugin 'nvie/vim-flake8'
 Plugin 'rust-lang/rust.vim'
 Plugin 'racer-rust/vim-racer'
 Plugin 'jceb/vim-orgmode'
-Plugin 'JuliaEditorSupport/julia-vim'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sheerun/vim-polyglot'
 

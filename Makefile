@@ -1,15 +1,13 @@
 BUNDLE    := .vim/bundle
 FTPLUGIN  := .vim/after/ftplugin
-DOTVIM    := $(HOME)/.vim
-DOTVIMRC  := $(HOME)/.vimrc
-SYMLINKS  := $(DOTVIM) $(DOTVIMRC)
-CSTYLE    := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++))
+DOTVIM    := $(HOME)/.config/nvim
+DOTVIMRC  := $(HOME)/.config/nvim/init.vim
 PYSTYLE   := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,python))
-RUSTSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,rust lua javascript typescript))
+RUSTSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++ rust lua javascript typescript))
 BUILDTLS  := build-essential cmake python3-dev
 CLANGTLS  := clang-7 clang-tidy-7 clang-tools-7 libclang1-7
 
-all: apt_libs $(BUNDLE) $(BUNDLE)/Vundle.vim plugin_install $(SYMLINKS) langstyles
+all: apt_libs $(BUNDLE) $(BUNDLE)/Vundle.vim $(DOTVIM) $(DOTVIMRC) langstyles plugin_install
 .PHONY: all apt_libs clean plugin_install langstyles
 
 $(BUNDLE):
@@ -33,20 +31,14 @@ plugin_install:
 	vim +PluginInstall +PluginUpdate +PluginClean +qall
 
 clean:
-	unlink $(HOME)/.vim
+	unlink $(DOTVIM)
 	rm -fr .vim/
-	unlink $(HOME)/.vimrc
+	unlink $(DOTVIMRC)
 
-langstyles: ftplugins $(CSTYLE) $(RUSTSTYLE) $(PYSTYLE)
+langstyles: ftplugins $(RUSTSTYLE) $(PYSTYLE)
 
 ftplugins:
 	mkdir -p $(FTPLUGIN)
-
-$(CSTYLE):
-	touch $@
-	echo "setlocal noexpandtab" >> $@
-	echo "setlocal shiftwidth=2" >> $@
-	echo "setlocal softtabstop=2" >> $@
 
 $(RUSTSTYLE):
 	touch $@
