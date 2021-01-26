@@ -182,8 +182,6 @@ Plugin 'python-mode/python-mode'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'nvie/vim-flake8'
-Plugin 'rust-lang/rust.vim'
-Plugin 'racer-rust/vim-racer'
 Plugin 'jceb/vim-orgmode'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'sheerun/vim-polyglot'
@@ -234,13 +232,6 @@ let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>n"
 let g:jedi#usages_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
-
-let g:rustfmt_autosave = 1
-let g:racer_cmd = "~/.cargo/bin/racer"
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 let g:clang_library_path = '/usr/lib/llvm-7/lib/libclang-7.so.1'
 let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
