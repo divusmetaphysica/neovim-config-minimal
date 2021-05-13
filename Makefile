@@ -2,8 +2,8 @@ BUNDLE    := .vim/bundle
 FTPLUGIN  := .vim/after/ftplugin
 DOTVIM    := $(HOME)/.config/nvim
 DOTVIMRC  := $(HOME)/.config/nvim/init.vim
-PYSTYLE   := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,python))
-RUSTSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++ rust lua javascript typescript))
+PYSTYLE   := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,python rust))
+RUSTSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++ lua javascript typescript))
 BUILDTLS  := build-essential cmake python3-dev
 CLANGTLS  := clang-7 clang-tidy-7 clang-tools-7 libclang1-7
 

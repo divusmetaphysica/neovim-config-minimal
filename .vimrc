@@ -92,6 +92,9 @@ set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
 
+" remap leader key
+let mapleader = ","
+
 " Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
@@ -206,8 +209,11 @@ Plugin 'tmhedberg/SimpylFold'
 " =========== Other =============
 " Plugin 'xavierd/clang_complete'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'rust-lang/rust.vim'
+Plugin 'fatih/vim-go'
+Plugin 'reasonml-editor/vim-reason-plus'
 
-" =========== Themes ============
+" Themes
 Plugin 'icymind/NeoSolarized'
 Plugin 'morhetz/gruvbox'
 Plugin 'dracula/vim'
@@ -257,5 +263,12 @@ let g:jedi#rename_command = "<leader>r"
 " let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
 " let g:clang_complete_auto = 1
 
+let g:rustfmt_autosave = 1
+let g:racer_cmd = "~/.cargo/bin/racer"
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
 colorscheme dracula
-" let g:airline_theme='solarized'
+" let g:airline_theme='dracula'
