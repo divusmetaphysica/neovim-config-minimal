@@ -1,4 +1,4 @@
-# My VIM configuration
+# My NEOVIM configuration
 
 Repo containes `.vimrc` and Makefile to install necessary packages
 Vundle.vim for vim plugins and set the symbolic links. If one wants
@@ -11,3 +11,8 @@ there are basic definitions for few language tab styles.
 3. enjoy!
 
 If something falls apart you can call `make clean`
+
+## TODO:
+- `coc.nvim` for javascript handling
+- `ALE` for ESLint integration
+- rust packages in `rust/lang` branch

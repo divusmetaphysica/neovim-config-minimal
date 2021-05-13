@@ -1,31 +1,44 @@
-FTPLUGIN=.vim/after/ftplugin
-CSTYLE=$(FTPLUGIN)/c.vim $(FTPLUGIN)/c++.vim
-PYSTYLE=$(FTPLUGIN)/python.vim
-RUSTSTYLE=$(FTPLUGIN)/rust.vim
+BUNDLE    := .vim/bundle
+FTPLUGIN  := .vim/after/ftplugin
+DOTVIM    := $(HOME)/.config/nvim
+DOTVIMRC  := $(HOME)/.config/nvim/init.vim
+PYSTYLE   := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,python))
+RUSTSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++ rust lua javascript typescript))
+BUILDTLS  := build-essential cmake python3-dev
+CLANGTLS  := clang-7 clang-tidy-7 clang-tools-7 libclang1-7
 
-all: ftplugins $(HOME)/.vim $(HOME)/.vimrc
-.PHONY: all clean
+all: apt_libs $(BUNDLE) $(BUNDLE)/Vundle.vim $(DOTVIM) $(DOTVIMRC) langstyles plugin_install
+.PHONY: all apt_libs clean plugin_install langstyles
 
-$(HOME)/.vim $(HOME)/.vimrc:
-	ln -s $(abspath .vim) $(HOME)/.vim
-	ln -s $(abspath .vimrc) $(HOME)/.vimrc
+$(BUNDLE):
+	mkdir -p $(BUNDLE)
+
+$(BUNDLE)/Vundle.vim:
+	git clone https://github.com/VundleVim/Vundle.vim $(BUNDLE)/Vundle.vim
+
+$(DOTVIM):
+	ln -s $(abspath .vim) $@
+
+$(DOTVIMRC):
+	ln -s $(abspath .vimrc) $@
+
+apt_libs:
+	sudo apt update
+	sudo apt install $(BUILDTLS)
+	sudo apt install $(CLANGTLS) 
+
+plugin_install:
+	vim +PluginInstall +PluginUpdate +PluginClean +qall
 
 clean:
-	unlink $(HOME)/.vim
+	unlink $(DOTVIM)
 	rm -fr .vim/
-	unlink $(HOME)/.vimrc
+	unlink $(DOTVIMRC)
 
-langstyles: ftplugins $(CSTYLE) $(RUSTSTYLE) $(PYSTYLE)
-.PHONY: langstyles
+langstyles: ftplugins $(RUSTSTYLE) $(PYSTYLE)
 
 ftplugins:
 	mkdir -p $(FTPLUGIN)
-
-$(CSTYLE):
-	touch $@
-	echo "setlocal noexpandtab" >> $@
-	echo "setlocal shiftwidth=2" >> $@
-	echo "setlocal softtabstop=2" >> $@
 
 $(RUSTSTYLE):
 	touch $@
@@ -33,7 +46,7 @@ $(RUSTSTYLE):
 	echo "setlocal shiftwidth=2" >> $@
 	echo "setlocal softtabstop=2" >> $@
 
-$(PYSTYLE): 
+$(PYSTYLE):
 	touch $@
 	echo "setlocal expandtab" >> $@
 	echo "setlocal shiftwidth=4" >> $@
