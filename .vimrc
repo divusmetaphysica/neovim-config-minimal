@@ -85,6 +85,23 @@ command! MakeTags !ctags -R .
 " - ^x^] for tags only
 " - ^n for anythign specified by the 'complete' option
 " - Use ^n and ^p to go back and forth in the suggestion list
+" 
+" Overview: In insert mode you can...
+" 
+" ^r = insert text from a register
+" ^a = insert text from register '.'
+" ^p = completion menu
+" ^x = special "completion mode" submode of insert
+" --^] = tag
+" --^p = pull from previous context
+" --^n = pull from next context
+" --^f = file completion
+" --^l = line
+" --^o = omnicompletion
+" 
+" How to change where to complete from:
+set omnifunc=syntaxcomplete#Complete
+set complete=.,w,b,u,t,i,kspell
 
 " Cursor motion
 set scrolloff=3
@@ -139,8 +156,8 @@ inoremap [ []<Esc>i
 " Formatting
 map <leader>q gqip
 
-" Remap ^] to gä
-map gä <C-]> 
+" Remap ^] to ^ä
+map <C-ä> <C-]> 
 
 " Or use your leader key + l to toggle on/off
 map <leader>l :set list!<CR> " Toggle tabs and EOL
@@ -167,7 +184,7 @@ if has('gui_running')
     set guioptions-=L
 
     if has('gui_win32')
-        set guifont=Fira_Code:h10:cANSI
+        set guifont=Source_Code_Pro:h10:cANSI
     else
         set guifont=Consolas\ 10
     endif
