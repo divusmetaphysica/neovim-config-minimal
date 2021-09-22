@@ -1,14 +1,10 @@
 " Don't try to be vi compatible
+"
 set nocompatible
-
-" Helps force plugins to load correctly when it is turned back on below
 filetype off
-
-" Turn on syntax highlighting
 syntax on
-
-" For plugins to load correctly
 filetype plugin indent on
+set encoding=utf-8
 
 " Search down into subfolders
 " provides tab completion for all file related tasks
@@ -16,24 +12,23 @@ set path+=**
 
 " Display all matching files when we tab complete
 set wildmenu
-
-" Security
 set modelines=0
 set exrc
 set secure
-
-" Show line numbers
 set number
 set relativenumber
-
-" Show file stats
 set ruler
-
-" Blink cursor on error instead of beeping (grr)
 set visualbell
+set bs=2                " Allow backspacing over everything in insert mode
+set ai                  " Always set auto-indenting on
+set history=50          " keep 50 lines of command history
 
-" Encoding
-set encoding=utf-8
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" When doing tab completion, give the following files lower priority.
+set suffixes+=.info,.aux,.log,.dvi,.bbl,.out,.o,.lo
+autocmd BufRead APKBUILD set filetype=sh
 
 " Whitespace
 set wrap
@@ -50,28 +45,17 @@ set noshiftround
 " set colorcolumn=100
 " highlight ColorColumn ctermbg=darkgray
 
-" Allow hidden buffers
-set hidden
-
-" Rendering
-set ttyfast
-
-" Status bar
-set laststatus=2
-
-" Last line
-set showmode
+set hidden       " Allow hidden buffers
+set ttyfast      " Rendering
+set laststatus=2 " Status bar
+set showmode     " Last line
 set showcmd
-
-" Window splitting directions
-set splitbelow
+set splitbelow   " Window splitting directions
 set splitright
+set list         " Uncomment this to enable by default:
 
 " Visualize tabs and newlines
 set listchars=tab:▸\ ,eol:¬
-
-" Uncomment this to enable by default:
-set list " To enable by default
 
 " This will enable
 " - Use ^] to jump to tag under cursor
@@ -184,9 +168,9 @@ if has('gui_running')
     set guioptions-=L
 
     if has('gui_win32')
-        set guifont=Source_Code_Pro:h10:cANSI
-    else
         set guifont=Consolas\ 10
+    else
+        set guifont=Source_Code_Pro:h10:cANSI
     endif
 endif
 
@@ -220,8 +204,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'tmhedberg/SimpylFold'
 
 " =========== Javascript ========
-" Plugin 'othree/es.next.syntax.vim'
-" Plugin 'othree/jspc.vim'
+Plugin 'othree/es.next.syntax.vim'
+Plugin 'othree/jspc.vim'
 
 " =========== Other =============
 " Plugin 'xavierd/clang_complete'
@@ -234,8 +218,8 @@ Plugin 'reasonml-editor/vim-reason-plus'
 Plugin 'icymind/NeoSolarized'
 Plugin 'morhetz/gruvbox'
 Plugin 'dracula/vim'
-" Plugin 'vim-airline/vim-airline'
-" Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -288,4 +272,4 @@ au FileType rust nmap gx <Plug>(rust-def)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 colorscheme dracula
-" let g:airline_theme='dracula'
+let g:airline_theme='dracula'
