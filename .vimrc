@@ -170,3 +170,6 @@ if has('gui_running')
     endif
 endif
 
+" Load manually cloned packages if put in .vim/pack/plugins/opt
+" packadd! vim-surround
+" packadd! vim-polyglot
