@@ -1,5 +1,4 @@
 " Don't try to be vi compatible
-"
 set nocompatible
 filetype off
 syntax on
@@ -204,20 +203,19 @@ Plugin 'nvie/vim-flake8'
 Plugin 'tmhedberg/SimpylFold'
 
 " =========== Javascript ========
-Plugin 'othree/es.next.syntax.vim'
-Plugin 'othree/jspc.vim'
+" Plugin 'othree/es.next.syntax.vim'
+" Plugin 'othree/jspc.vim'
 
 " =========== Other =============
 " Plugin 'xavierd/clang_complete'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'rust-lang/rust.vim'
-Plugin 'fatih/vim-go'
-Plugin 'reasonml-editor/vim-reason-plus'
+" Plugin 'rust-lang/rust.vim'
+" Plugin 'fatih/vim-go'
 
 " Themes
 Plugin 'icymind/NeoSolarized'
-Plugin 'morhetz/gruvbox'
-Plugin 'dracula/vim'
+" Plugin 'morhetz/gruvbox'
+" Plugin 'dracula/vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -264,12 +262,5 @@ let g:jedi#rename_command = "<leader>r"
 " let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
 " let g:clang_complete_auto = 1
 
-let g:rustfmt_autosave = 1
-let g:racer_cmd = "~/.cargo/bin/racer"
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
-
-colorscheme dracula
-let g:airline_theme='dracula'
+colorscheme NeoSolarized
+let g:airline_theme='solarized'

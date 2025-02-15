@@ -4,9 +4,10 @@ DOTVIM    := $(HOME)/.config/nvim
 DOTVIMRC  := $(HOME)/.config/nvim/init.vim
 PYSTYLE   := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,python rust go))
 JSSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++ lua javascript typescript))
+CLANG_VERSION := 19
 
-all: apt_libs $(BUNDLE) $(BUNDLE)/Vundle.vim $(DOTVIM) $(DOTVIMRC) langstyles plugin_install
-.PHONY: all apt_libs clean plugin_install langstyles
+all: universal_libs apt_libs $(BUNDLE) $(BUNDLE)/Vundle.vim $(DOTVIM) $(DOTVIMRC) langstyles plugin_install
+.PHONY: all universal_libs clang_libs apt_libs clean plugin_install langstyles
 
 $(BUNDLE):
 	mkdir -p $(BUNDLE)
@@ -23,7 +24,13 @@ $(DOTVIMRC):
 apt_libs:
 	sudo apt update
 	sudo apt install build-essential cmake python3-dev
-	sudo apt install clang-7 clang-tidy-7 clang-tools-7 libclang1-7
+
+clang_libs:
+	sudo apt update
+	sudo apt install clang-$(CLANG_VERSION) clang-tidy-$(CLANG_VERSION) clang-tools-$(CLANG_VERSION) libclang1-$(CLANG_VERSION)
+
+universal_libs:
+	sudo apt update
 	sudo apt install universal-ctags
 
 plugin_install:
