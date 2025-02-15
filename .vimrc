@@ -143,8 +143,70 @@ map gä <C-]>
 " Or use your leader key + l to toggle on/off
 map <leader>l :set list!<CR> " Toggle tabs and EOL
 
+noremap <silent> <C-S-Left> :vertical resize +5<CR>
+noremap <silent> <C-S-Right> :vertical resize -5<CR>
+noremap <silent> <leader>w= <C-W>=
+
+noremap <silent> <leader>wh <C-W>h
+noremap <silent> <leader>wj <C-W>j
+noremap <silent> <leader>wk <C-W>k
+noremap <silent> <leader>wl <C-W>l
+
+noremap <silent> <leader>wq <C-W><C-Q>
+noremap <silent> <leader>wo <C-W><C-O>
+
 " clean trailing whitespace
 autocmd BufWritePre *.py :%s/\s\+$//e
+
+
+" This allows to open netrw folder view in a side panel!
+let s:hasfolder=1
+let g:foldertoopen = '.'
+
+function s:parse_arguments()
+  let i = 1
+  while i < len(v:argv)
+    if v:argv[i][0] == '-'
+      let i = i + 2
+    else
+      let path = v:argv[i]
+      if path[len(path)-1] == '\' || path[len(path)-1] == '/'
+        let path = path[:-2]
+      endif
+      if finddir(escape(fnamemodify(path, ':t'), ' '), escape(fnamemodify(path, ':h'), ' ')) != ''
+        let s:hasfolder = 1
+        let g:foldertoopen = v:argv[i]
+        break
+      else
+        let s:hasfolder = 0
+      endif
+      let i = i + 1
+    endif
+  endwhile
+endfunction
+
+call s:parse_arguments()
+
+let g:netrw_liststyle = 3
+let g:netrw_banner = 1
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 20
+let g:netrw_altv = 1
+
+function! InitBrowser()
+  if g:foldertoopen != ''
+    enew
+    exe 'Vexplore ' . g:foldertoopen
+    let g:foldertoopen = ''
+  endif
+endfunction
+
+if s:hasfolder
+  augroup ProjectDrawer
+    autocmd!
+     autocmd VimEnter * :call InitBrowser()
+  augroup END
+endif
 
 " Show EOL type and last modified timestamp, right after the filename
 set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M:%S\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
@@ -174,3 +236,5 @@ endif
 " Load manually cloned packages if put in .vim/pack/plugins/opt
 " packadd! vim-surround
 " packadd! vim-polyglot
+
+
