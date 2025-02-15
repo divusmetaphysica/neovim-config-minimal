@@ -92,6 +92,8 @@ set backspace=indent,eol,start
 set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
 
+let mapleader=" "
+
 " Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
@@ -101,7 +103,6 @@ nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
-let mapleader=","
 
 " Insert newline without entering insert mode
 nmap <S-Enter> O<Esc>
@@ -152,7 +153,7 @@ set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M:%S\",getftime
 set t_Co=256
 set background=dark
 set termguicolors
-colorscheme koehler
+colorscheme default
 
 if has('gui_running')
     let g:solarized_termcolors=256
