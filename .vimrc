@@ -158,6 +158,8 @@ noremap <silent> <leader>wo <C-W><C-O>
 " clean trailing whitespace
 autocmd BufWritePre *.py :%s/\s\+$//e
 
+" Auto generate tags file on file write of *.c and *.h files
+autocmd BufWritePost *.c,*.h silent! !ctags . &
 
 " This allows to open netrw folder view in a side panel!
 let s:hasfolder=1
@@ -237,6 +239,7 @@ set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M:%S\",getftime
 let g:lightline = { 'colorscheme': 'default' }
 
 " Syntastic minimal setup
+set noshowmode
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -245,5 +248,4 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-
 
