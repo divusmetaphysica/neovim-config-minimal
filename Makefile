@@ -6,23 +6,21 @@ PYSTYLE   := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,python))
 RUSTSTYLE := $(addprefix $(FTPLUGIN)/,$(addsuffix .vim,c c++ rust lua javascript typescript))
 
 all: langstyles plugins link
-.PHONY: all clean pack ftplugin link langstyles plugins $(RUSTSTYLE) $(RUSTSTYLE)
-
-pack:
-	mkdir -p $(PACK)
+.PHONY: all clean ftplugin link langstyles plugins $(RUSTSTYLE) $(RUSTSTYLE)
 
 ftplugin:
 	mkdir -p $(FTPLUGIN)
 
-vim-surround:
-	mkdir -p $(PACK)/tpope/start
-	git clone --depth 1 https://tpope.io/vim/surround.git $(PACK)/tpope/start/vim-surround
+plugins:
+	mkdir -p $(PACK)/plugins/start
+	git clone --depth 1 https://tpope.io/vim/surround.git $(PACK)/plugins/start/vim-surround
 	vim -u NONE -c "helptags surround/doc" -c q
-
-vim-polyglot:
-	mkdir -p $(PACK)/sheeran/start
-	git clone --depth 1 https://github.com/sheerun/vim-polyglot $(PACK)/sheeran/start/vim-polyglot
+	git clone --depth 1 https://github.com/sheerun/vim-polyglot $(PACK)/plugins/start/vim-polyglot
 	vim -u NONE -c "helptags polyglot/doc" -c q
+	git clone --depth 1 https://github.com/vim-syntastic/syntastic $(PACK)/plugins/start/syntastic
+	vim -u NONE -c "helptags syntastic/doc" -c q
+	git clone --depth 1 https://github.com/itchyny/lightline.vim $(PACK)/plugins/start/lightline
+	vim -u NONE -c "helptags lightline/doc" -c q
 
 $(RUSTSTYLE):
 	touch $@
@@ -40,7 +38,6 @@ link:
 	ln -s $(abspath .vimrc) $(DOTVIMRC)
 
 langstyles: ftplugin $(RUSTSTYLE) $(PYSTYLE)
-plugins: pack vim-surround vim-polyglot
 
 clean:
 	unlink $(DOTVIM)

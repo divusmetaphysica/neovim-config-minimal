@@ -208,33 +208,42 @@ if s:hasfolder
   augroup END
 endif
 
+" Color scheme (terminal)
+if !has('gui_running')
+  set t_Co=256
+  set background=dark
+  set termguicolors
+  colorscheme default
+endif 
+
+if has('gui_running')
+  set guioptions-=m
+  set guioptions-=T
+  set guioptions-=r
+  set guioptions-=L
+
+  if has('gui_win32')
+    set guifont=Fira_Code:h10:cANSI
+  else
+    set guifont=Consolas\ 10
+  endif
+endif
+
+
 " Show EOL type and last modified timestamp, right after the filename
 set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M:%S\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
 
-" Color scheme (terminal)
-set t_Co=256
-set background=dark
-set termguicolors
-colorscheme default
+" Lightline minimal setup
+let g:lightline = { 'colorscheme': 'default' }
 
-if has('gui_running')
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
+" Syntastic minimal setup
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=r
-    set guioptions-=L
-
-    if has('gui_win32')
-        set guifont=Fira_Code:h10:cANSI
-    else
-        set guifont=Consolas\ 10
-    endif
-endif
-
-" Load manually cloned packages if put in .vim/pack/plugins/opt
-" packadd! vim-surround
-" packadd! vim-polyglot
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 
