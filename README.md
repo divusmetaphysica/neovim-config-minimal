@@ -13,3 +13,9 @@ on windows
 
   mkdir -p $env:LOCALAPPDATA/nvim
   mkdir -p $env:LOCALAPPDATA/nvim/pack/plugins
+
+## Chosen plugins
+
+  echasnovski/mini.surround
+  nvim-lualine/lualine
+ 

@@ -12,33 +12,43 @@ for option, value in pairs(powershell_options) do
 	vim.opt[option] = value
 end
 
+vim.cmd "colorscheme zaibatsu"
+
 local opt = vim.opt
+
+opt.background = "dark"
+opt.termguicolors = true
 
 opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.clipboard = "unnamedplus"
 opt.completeopt = "menu,menuone,noselect"
 opt.mouse = "a"
+
 opt.laststatus = 2
 opt.showcmd = true
-opt.showmode = true
+opt.showmode = false
+
 opt.hlsearch = false
 opt.ignorecase = true
 opt.smartcase = true
 opt.cursorline = true
 opt.number = true
 opt.relativenumber = true
+
 opt.splitbelow = true
 opt.splitright = true
+
 opt.scrolloff = 4
 opt.sidescrolloff = 8
 opt.winminwidth = 5
+
 opt.textwidth = 99
 opt.expandtab = true
-opt.shiftwidth = 4
 opt.shiftround = true
+opt.shiftwidth = 4
 opt.tabstop = 4
-opt.termguicolors = true
+
 opt.hidden = true
 opt.undofile = true
 opt.undolevels = 10000
@@ -105,7 +115,7 @@ vim.keymap.set({ "n", "v", "i" }, "gä", "<C-]>")
 -- Or use your leader key + l to toggle on/off
 vim.keymap.set({ "n", "v", "i" }, "<leader>l", ":set list!<CR>")
 
-vim.keymap.set("n", "<C-S-Left>", ":vertical resize +5<CR>", { remap = true, silent = true }) --
+vim.keymap.set("n", "<C-S-Left>", ":vertical resize +5<CR>", { remap = true, silent = true })
 vim.keymap.set("n", "<C-S-Right>", ":vertical resize -5<CR>", { remap = true, silent = true })
 vim.keymap.set("n", "<leader>w=", "<C-W>=", { remap = true, silent = true })
 
@@ -114,8 +124,11 @@ vim.keymap.set("n", "<leader>wj", "<C-W>j", { remap = true, silent = true })
 vim.keymap.set("n", "<leader>wk", "<C-W>k", { remap = true, silent = true })
 vim.keymap.set("n", "<leader>wl", "<C-W>l", { remap = true, silent = true })
 
-vim.keymap.set("n", "<leader>wq", "<C-W><C-Q>", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>wq", "<C-W>q", { remap = true, silent = true })
 vim.keymap.set("n", "<leader>wo", "<C-W><C-O>", { remap = true, silent = true })
+
+-- open netrw on side pane
+vim.keymap.set("n", "<leader>e", ":vsplit .<CR>:vertical resize 30<CR><C-W>r<C-W>l", { remap = true, silent = true })
 
 -- clean trailing whitespace
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -128,38 +141,11 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 	command = "silent! !ctags . &",
 })
 
-vim.s.hasfolder = 1
-vim.g.foldertoopen = "."
-vim.g.netrw_liststyle = 3
-vim.g.netrw_banner = 1
-vim.g.netrw_browse_split = 4
-vim.g.netrw_winsize = 20
-vim.g.netrw_altv = 1
-
-if not has("gui_running") then
-	vim.opt.t_Co = 256
-	vim.opt.background = "dark"
-	vim.opt.termguicolors = true
-	vim.opt.colorscheme = "default"
-end
-
-if has("gui_running") then
-	vim.opt.guioptions = vim.opt.guioptions - "m"
-	vim.opt.guioptions = vim.opt.guioptions - "T"
-	vim.opt.guioptions = vim.opt.guioptions - "r"
-	vim.opt.guioptions = vim.opt.guioptions - "L"
-
-	if has("gui_win32") then
-		vim.opt.guifont = "Fira_Code:h10:cANSI"
-	else
-		vim.opt.guifont = "Consolas 10"
-	end
-end
-
+-- Use like GitPlugin repo reponame
 vim.api.nvim_create_user_command("GitPlugin", function(input)
 	local repo = input.fargs
 	local url = "https://github.com/%s/%s.git"
-	local plugin_dir = vim.fn.stdpath("config") .. "/pack/plugin/start/%s"
+	local plugin_dir = vim.fn.stdpath("config") .. "/pack/plugins/start/%s"
 
 	if repo[1] == nil or repo[2] == nil then
 		local msg = "Must provide user name and repository"
@@ -179,21 +165,90 @@ vim.api.nvim_create_user_command("GitPlugin", function(input)
 	vim.fn.jobstart(command, { on_exit = on_done })
 end, { nargs = "+" })
 
-GitPlugin tpope vim-surround.git
-GitPlugin sheerun vim-polyglot
-GitPlugin vim-syntastic syntastic
-GitPlugin itchyny lightline.vim
-
 -- Show EOL type and last modified timestamp, right after the filename
 vim.opt.statusline = '%<%F%h%m%r [%{&ff}] (%{strftime("%Y-%m-%d %H:%M:%S",getftime(expand("%:p")))})%=%l,%c%V %P'
 
--- Syntastic minimal setup
-vim.opt.noshowmode = true
-vim.opt.statusline = "%#warningmsg# %{SyntasticStatuslineFlag()} %*"
+--Plugin setups
+require('lualine').setup({
+  options = {
+    icons_enabled = true,
+    theme = 'palenight',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    always_show_tabline = true,
+    globalstatus = false,
+    refresh = {
+      statusline = 100,
+      tabline = 100,
+      winbar = 100,
+    }
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+})
 
-vim.g.syntastic_always_populate_loc_list = 1
-vim.g.syntastic_auto_loc_list = 1
-vim.g.syntastic_check_on_open = 1
-vim.g.syntastic_check_on_wq = 0
+require("mini.surround").setup({
+  -- Add custom surroundings to be used on top of builtin ones. For more
+  -- information with examples, see `:h MiniSurround.config`.
+  custom_surroundings = nil,
 
+  -- Duration (in ms) of highlight when calling `MiniSurround.highlight()`
+  highlight_duration = 500,
 
+  -- Module mappings. Use `''` (empty string) to disable one.
+  mappings = {
+    add = 'sa', -- Add surrounding in Normal and Visual modes
+    delete = 'sd', -- Delete surrounding
+    find = 'sf', -- Find surrounding (to the right)
+    find_left = 'sF', -- Find surrounding (to the left)
+    highlight = 'sh', -- Highlight surrounding
+    replace = 'sr', -- Replace surrounding
+    update_n_lines = 'sn', -- Update `n_lines`
+
+    suffix_last = 'l', -- Suffix to search with "prev" method
+    suffix_next = 'n', -- Suffix to search with "next" method
+  },
+
+  -- Number of lines within which surrounding is searched
+  n_lines = 20,
+
+  -- Whether to respect selection type:
+  -- - Place surroundings on separate lines in linewise mode.
+  -- - Place surroundings on each line in blockwise mode.
+  respect_selection_type = false,
+
+  -- How to search for surrounding (first inside current line, then inside
+  -- neighborhood). One of 'cover', 'cover_or_next', 'cover_or_prev',
+  -- 'cover_or_nearest', 'next', 'prev', 'nearest'. For more details,
+  -- see `:h MiniSurround.config`.
+  search_method = 'cover',
+
+  -- Whether to disable showing non-error feedback
+  -- This also affects (purely informational) helper messages shown after
+  -- idle time if user input is required.
+  silent = false,
+})
