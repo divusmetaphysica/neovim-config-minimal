@@ -1,251 +1,199 @@
-" Don't try to be vi compatible
-set nocompatible
+-- terminal settings
+local powershell_options = {
+	shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell",
+	shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+	shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+	shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+	shellquote = "",
+	shellxquote = "",
+}
 
-" Helps force plugins to load correctly when it is turned back on below
-filetype off
+for option, value in pairs(powershell_options) do
+	vim.opt[option] = value
+end
 
-" Turn on syntax highlighting
-syntax on
+local opt = vim.opt
 
-" For plugins to load correctly
-filetype plugin indent on
+opt.encoding = "utf-8"
+opt.fileencoding = "utf-8"
+opt.clipboard = "unnamedplus"
+opt.completeopt = "menu,menuone,noselect"
+opt.mouse = "a"
+opt.laststatus = 2
+opt.showcmd = true
+opt.showmode = true
+opt.hlsearch = false
+opt.ignorecase = true
+opt.smartcase = true
+opt.cursorline = true
+opt.number = true
+opt.relativenumber = true
+opt.splitbelow = true
+opt.splitright = true
+opt.scrolloff = 4
+opt.sidescrolloff = 8
+opt.winminwidth = 5
+opt.textwidth = 99
+opt.expandtab = true
+opt.shiftwidth = 4
+opt.shiftround = true
+opt.tabstop = 4
+opt.termguicolors = true
+opt.hidden = true
+opt.undofile = true
+opt.undolevels = 10000
+opt.secure = true
+opt.exrc = true
+opt.foldmethod = "indent"
+opt.foldlevel = 99
 
-" Search down into subfolders
-" provides tab completion for all file related tasks
-set path+=**
+-- Key mappings
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>")
 
-" Display all matching files when we tab complete
-set wildmenu
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
 
-" Security
-set modelines=0
-set exrc
-set secure
+-- minimize terminal split
+vim.keymap.set("n", "<C-g>", "3<C-w>_")
 
-" Show line numbers
-set number
-set relativenumber
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+	group = highlight_group,
+	pattern = "*",
+})
 
-" Show file stats
-set ruler
+vim.keymap.set("n", "<Up>", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("n", "<Down>", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-" Blink cursor on error instead of beeping (grr)
-set visualbell
+-- Move up/down editor lines
+vim.keymap.set("n", "j", "gj", { remap = true })
+vim.keymap.set("n", "k", "gk", { remap = true })
 
-" Encoding
-set encoding=utf-8
+-- Insert newline without entering insert mode
+vim.keymap.set("n", "<S-Enter>", "O<Esc>")
+vim.keymap.set("n", "<CR>", "o<Esc>")
 
-" Whitespace
-set wrap
-set textwidth=99
-set formatoptions=tcqrn1
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set smarttab
-set autoindent
-set smartindent
-set noshiftround
-" set colorcolumn=100
-" highlight ColorColumn ctermbg=darkgray
+-- Searching
+vim.keymap.set("n", "/", "/\v", { remap = true })
+vim.keymap.set("v", "/", "/\v", { remap = true })
+vim.keymap.set({ "n", "v", "i" }, "<leader><space>", ":let @/=''<cr>")
+vim.keymap.set("n", "<F3>", ":set hlsearch!<CR>", { remap = true })
 
-" Allow hidden buffers
-set hidden
+-- Remap help key.
+vim.keymap.set("n", "<C-space>", "za", { remap = true })
+vim.keymap.set("i", "<F1>", "<ESC>:set invfullscreen<CR>a", { remap = true })
+vim.keymap.set({ "n", i }, "<F1>", ":set invfullscreen<CR>", { remap = true })
+vim.keymap.set("n", "/", "/\v")
 
-" Rendering
-set ttyfast
+-- Brace completion
+vim.keymap.set("i", "{", "{}<Esc>i", { remap = true })
+vim.keymap.set("i", "(", "()<Esc>i", { remap = true })
+vim.keymap.set("i", "[", "[]<Esc>i", { remap = true })
 
-" Status bar
-set laststatus=2
+-- Formatting
+vim.keymap.set("n", "<leader>q", "gqip")
 
-" Last line
-set showmode
-set showcmd
+-- Remap ^] to gä
+vim.keymap.set("n", "^]", "gä")
+vim.keymap.set({ "n", "v", "i" }, "gä", "<C-]>")
 
-" Window splitting directions
-set splitbelow
-set splitright
+-- Or use your leader key + l to toggle on/off
+vim.keymap.set({ "n", "v", "i" }, "<leader>l", ":set list!<CR>")
 
-" Visualize tabs and newlines
-set listchars=tab:▸\ ,eol:¬
+vim.keymap.set("n", "<C-S-Left>", ":vertical resize +5<CR>", { remap = true, silent = true }) --
+vim.keymap.set("n", "<C-S-Right>", ":vertical resize -5<CR>", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>w=", "<C-W>=", { remap = true, silent = true })
 
-" Uncomment this to enable by default:
-set list " To enable by default
+vim.keymap.set("n", "<leader>wh", "<C-W>h", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>wj", "<C-W>j", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>wk", "<C-W>k", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>wl", "<C-W>l", { remap = true, silent = true })
 
-" This will enable
-" - Use ^] to jump to tag under cursor
-" - Use g^] for ambiguous tags
-" - Use ^t to jump back up the tag stack
-command! MakeTags !ctags -R .
+vim.keymap.set("n", "<leader>wq", "<C-W><C-Q>", { remap = true, silent = true })
+vim.keymap.set("n", "<leader>wo", "<C-W><C-O>", { remap = true, silent = true })
 
-" Autocompletion is already enabled with ctags
-" - ^x^n for JUST this file
-" - ^x^f for filenames (works with out path trick!)
-" - ^x^] for tags only
-" - ^n for anythign specified by the 'complete' option
-" - Use ^n and ^p to go back and forth in the suggestion list
+-- clean trailing whitespace
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+	pattern = { "*.py" },
+	command = ":%s/s+$//e",
+})
 
-" Cursor motion
-set scrolloff=3
-set backspace=indent,eol,start
-set matchpairs+=<:> " use % to jump between pairs
-runtime! macros/matchit.vim
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+	pattern = { "*.c", "*.h" },
+	command = "silent! !ctags . &",
+})
 
-let mapleader=" "
+vim.s.hasfolder = 1
+vim.g.foldertoopen = "."
+vim.g.netrw_liststyle = 3
+vim.g.netrw_banner = 1
+vim.g.netrw_browse_split = 4
+vim.g.netrw_winsize = 20
+vim.g.netrw_altv = 1
 
-" Move up/down editor lines
-nnoremap j gj
-nnoremap k gk
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-nmap <silent> <A-Up> :wincmd k<CR>
-nmap <silent> <A-Down> :wincmd j<CR>
-nmap <silent> <A-Left> :wincmd h<CR>
-nmap <silent> <A-Right> :wincmd l<CR>
+if not has("gui_running") then
+	vim.opt.t_Co = 256
+	vim.opt.background = "dark"
+	vim.opt.termguicolors = true
+	vim.opt.colorscheme = "default"
+end
 
-" Insert newline without entering insert mode
-nmap <S-Enter> O<Esc>
-nmap <CR> o<Esc>
+if has("gui_running") then
+	vim.opt.guioptions = vim.opt.guioptions - "m"
+	vim.opt.guioptions = vim.opt.guioptions - "T"
+	vim.opt.guioptions = vim.opt.guioptions - "r"
+	vim.opt.guioptions = vim.opt.guioptions - "L"
 
-" Searching
-nnoremap / /\v
-vnoremap / /\v
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set showmatch
-map <leader><space> :let @/=''<cr> " clear search
-nnoremap <F3> :set hlsearch!<CR>
+	if has("gui_win32") then
+		vim.opt.guifont = "Fira_Code:h10:cANSI"
+	else
+		vim.opt.guifont = "Consolas 10"
+	end
+end
 
-" Code folding
-set foldmethod=indent
-set foldlevel=99
-nnoremap <C-space> za
+vim.api.nvim_create_user_command("GitPlugin", function(input)
+	local repo = input.fargs
+	local url = "https://github.com/%s/%s.git"
+	local plugin_dir = vim.fn.stdpath("config") .. "/pack/plugin/start/%s"
 
-" Remap help key.
-inoremap <F1> <ESC>:set invfullscreen<CR>a
-nnoremap <F1> :set invfullscreen<CR>
-vnoremap <F1> :set invfullscreen<CR>
+	if repo[1] == nil or repo[2] == nil then
+		local msg = "Must provide user name and repository"
+		vim.notify(msg, vim.log.levels.WARN)
+		return
+	end
 
-" Brace completion
-inoremap { {}<Esc>i
-inoremap ( ()<Esc>i
-inoremap [ []<Esc>i
+	local full_url = url:format(repo[1], repo[2])
+	local command = { "git", "clone", full_url, plugin_dir:format(repo[2]) }
 
-" Formatting
-map <leader>q gqip
+	local on_done = function()
+		vim.cmd("packloadall! | helptags ALL")
+		vim.notify("Done.")
+	end
 
-" Remap ^] to gä
-map gä <C-]> 
+	vim.notify("Cloning repository...")
+	vim.fn.jobstart(command, { on_exit = on_done })
+end, { nargs = "+" })
 
-" Or use your leader key + l to toggle on/off
-map <leader>l :set list!<CR> " Toggle tabs and EOL
+GitPlugin tpope vim-surround.git
+GitPlugin sheerun vim-polyglot
+GitPlugin vim-syntastic syntastic
+GitPlugin itchyny lightline.vim
 
-noremap <silent> <C-S-Left> :vertical resize +5<CR>
-noremap <silent> <C-S-Right> :vertical resize -5<CR>
-noremap <silent> <leader>w= <C-W>=
+-- Show EOL type and last modified timestamp, right after the filename
+vim.opt.statusline = '%<%F%h%m%r [%{&ff}] (%{strftime("%Y-%m-%d %H:%M:%S",getftime(expand("%:p")))})%=%l,%c%V %P'
 
-noremap <silent> <leader>wh <C-W>h
-noremap <silent> <leader>wj <C-W>j
-noremap <silent> <leader>wk <C-W>k
-noremap <silent> <leader>wl <C-W>l
+-- Syntastic minimal setup
+vim.opt.noshowmode = true
+vim.opt.statusline = "%#warningmsg# %{SyntasticStatuslineFlag()} %*"
 
-noremap <silent> <leader>wq <C-W><C-Q>
-noremap <silent> <leader>wo <C-W><C-O>
+vim.g.syntastic_always_populate_loc_list = 1
+vim.g.syntastic_auto_loc_list = 1
+vim.g.syntastic_check_on_open = 1
+vim.g.syntastic_check_on_wq = 0
 
-" clean trailing whitespace
-autocmd BufWritePre *.py :%s/\s\+$//e
-
-" Auto generate tags file on file write of *.c and *.h files
-autocmd BufWritePost *.c,*.h silent! !ctags . &
-
-" This allows to open netrw folder view in a side panel!
-let s:hasfolder=1
-let g:foldertoopen = '.'
-
-function s:parse_arguments()
-  let i = 1
-  while i < len(v:argv)
-    if v:argv[i][0] == '-'
-      let i = i + 2
-    else
-      let path = v:argv[i]
-      if path[len(path)-1] == '\' || path[len(path)-1] == '/'
-        let path = path[:-2]
-      endif
-      if finddir(escape(fnamemodify(path, ':t'), ' '), escape(fnamemodify(path, ':h'), ' ')) != ''
-        let s:hasfolder = 1
-        let g:foldertoopen = v:argv[i]
-        break
-      else
-        let s:hasfolder = 0
-      endif
-      let i = i + 1
-    endif
-  endwhile
-endfunction
-
-call s:parse_arguments()
-
-let g:netrw_liststyle = 3
-let g:netrw_banner = 1
-let g:netrw_browse_split = 4
-let g:netrw_winsize = 20
-let g:netrw_altv = 1
-
-function! InitBrowser()
-  if g:foldertoopen != ''
-    enew
-    exe 'Vexplore ' . g:foldertoopen
-    let g:foldertoopen = ''
-  endif
-endfunction
-
-if s:hasfolder
-  augroup ProjectDrawer
-    autocmd!
-     autocmd VimEnter * :call InitBrowser()
-  augroup END
-endif
-
-" Color scheme (terminal)
-if !has('gui_running')
-  set t_Co=256
-  set background=dark
-  set termguicolors
-  colorscheme default
-endif 
-
-if has('gui_running')
-  set guioptions-=m
-  set guioptions-=T
-  set guioptions-=r
-  set guioptions-=L
-
-  if has('gui_win32')
-    set guifont=Fira_Code:h10:cANSI
-  else
-    set guifont=Consolas\ 10
-  endif
-endif
-
-
-" Show EOL type and last modified timestamp, right after the filename
-set statusline=%<%F%h%m%r\ [%{&ff}]\ (%{strftime(\"%Y-%m-%d\ %H:%M:%S\",getftime(expand(\"%:p\")))})%=%l,%c%V\ %P
-
-" Lightline minimal setup
-let g:lightline = { 'colorscheme': 'default' }
-
-" Syntastic minimal setup
-set noshowmode
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 

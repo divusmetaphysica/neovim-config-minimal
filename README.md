@@ -1,18 +1,15 @@
 # My NEOVIM configuration
 
-Repo containes `.vimrc` and Makefile to install necessary packages
-Vundle.vim for vim plugins and set the symbolic links. If one wants
-there are basic definitions for few language tab styles.
+simple neovim setup with manual plugin handling
 
 ## How to setup?
 
-1. `make`
-2. `make langstyles` [Optional]
-3. enjoy!
+Create on linux
 
-If something falls apart you can call `make clean`
+  mkdir -p ~/.config/nvim
+  mkdir -p ~/.config/nvim/pack/plugins
 
-## TODO:
-- `coc.nvim` for javascript handling
-- `ALE` for ESLint integration
-- rust packages in `rust/lang` branch
+on windows
+
+  mkdir -p $env:LOCALAPPDATA/nvim
+  mkdir -p $env:LOCALAPPDATA/nvim/pack/plugins
