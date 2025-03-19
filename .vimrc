@@ -183,8 +183,8 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe = 'npm run lint --'
 
 " Load plugins here (pathogen or vundle)
-set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin('~/.config/nvim/bundle/')
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin('~/.vim/bundle/')
 
 " Let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -208,11 +208,7 @@ Plugin 'othree/es.next.syntax.vim'
 Plugin 'othree/jspc.vim'
 
 " =========== Other =============
-" Plugin 'xavierd/clang_complete'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'rust-lang/rust.vim'
-Plugin 'fatih/vim-go'
-Plugin 'reasonml-editor/vim-reason-plus'
 
 " Themes
 Plugin 'icymind/NeoSolarized'
@@ -259,17 +255,6 @@ let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "<leader>n"
 let g:jedi#usages_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
-
-" let g:clang_library_path = '/usr/lib/llvm-7/lib/libclang-7.so.1'
-" let g:clang_user_options = '-std=c11 -Wall -Wextra -pedantic'
-" let g:clang_complete_auto = 1
-
-let g:rustfmt_autosave = 1
-let g:racer_cmd = "~/.cargo/bin/racer"
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 colorscheme dracula
 let g:airline_theme='dracula'
