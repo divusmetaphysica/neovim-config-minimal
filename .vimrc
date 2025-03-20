@@ -206,8 +206,8 @@ Plug 'davidhalter/jedi-vim'
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/jspc.vim'
 Plug 'plasticboy/vim-markdown'
-Plug 'icymind/NeoSolarized'
 Plug 'itchyny/lightline.vim'
+" Plug 'icymind/NeoSolarized'
 
 call plug#end()
 
@@ -241,7 +241,7 @@ let g:jedi#usages_command = "<leader>n"
 let g:jedi#usages_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
 
-colorscheme NeoSolarized
+colorscheme evening
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
+      \ 'colorscheme': 'wombat',
       \ }
