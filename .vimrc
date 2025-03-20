@@ -53,6 +53,7 @@ set showcmd
 set splitbelow   " Window splitting directions
 set splitright
 set list         " Uncomment this to enable by default:
+set noshowmode
 
 " Visualize tabs and newlines
 set listchars=tab:▸\ ,eol:¬
@@ -158,76 +159,30 @@ set background=dark
 set termguicolors
 colorscheme koehler
 
-if has('gui_running')
-    let g:solarized_termcolors=256
-    let g:solarized_termtrans=1
-
-    set guioptions-=m
-    set guioptions-=T
-    set guioptions-=r
-    set guioptions-=L
-
-    if has('gui_win32')
-        set guifont=Consolas\ 10
-    else
-        set guifont=Source_Code_Pro:h10:cANSI
-    endif
-endif
-
 " ================= PLUGINS ===================
 
-let g:pymode_lint = 0
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = '--max-line-length 99'
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_javascript_eslint_exe = 'npm run lint --'
-
 " Load plugins here (pathogen or vundle)
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin('~/.vim/bundle/')
+" set rtp+=~/.vim/autoload/plug.vim
+call plug#begin()
 
-" Let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plug 'VundleVim/Vundle.vim'
+" Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'dense-analysis/ale'
+Plug 'sheerun/vim-polyglot'
+Plug 'scrooloose/nerdtree'
+Plug 'lifepillar/vim-mucomplete'
+Plug 'python-mode/python-mode'
+Plug 'davidhalter/jedi-vim'
+Plug 'othree/es.next.syntax.vim'
+Plug 'othree/jspc.vim'
+Plug 'plasticboy/vim-markdown'
+Plugin 'icymind/NeoSolarized' "dracula/vim'
+Plug 'itchyny/lightline.vim'
 
-Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/syntastic'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'scrooloose/nerdtree'
-Plugin 'lifepillar/vim-mucomplete'
+call plug#end()
 
-" =========== Python ============
-Plugin 'python-mode/python-mode'
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'nvie/vim-flake8'
-Plugin 'tmhedberg/SimpylFold'
-
-" =========== Javascript ========
-Plugin 'othree/es.next.syntax.vim'
-Plugin 'othree/jspc.vim'
-
-" =========== Other =============
-Plugin 'plasticboy/vim-markdown'
-
-" Themes
-Plugin 'icymind/NeoSolarized'
-Plugin 'morhetz/gruvbox'
-Plugin 'dracula/vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-" All of your Plugins must be added before the following line
-call vundle#end()
-
-let g:SimpylFold_docstring_preview=1
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 set completeopt-=preview
 set completeopt+=menuone,noselect
@@ -245,6 +200,8 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 let NERDTreeIgnore=['\.pyc$', '\~$', '__pycache__'] "ignore files in NERDTree
 
+
+let g:pymode_lint = 0
 let g:pymode_python = "python3"
 let g:jedi#popup_on_dot = 0
 let g:jedi#goto_command = "<leader>d"
@@ -256,5 +213,7 @@ let g:jedi#usages_command = "<leader>n"
 let g:jedi#usages_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
 
-colorscheme dracula
-let g:airline_theme='dracula'
+colorscheme NeoSolarized
+let g:lightline_theme= {
+      \ 'colorscheme': 'solarized',
+      \ }
