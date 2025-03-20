@@ -102,7 +102,9 @@ set matchpairs+=<:> " use % to jump between pairs
 runtime! macros/matchit.vim
 
 " remap leader key
-let mapleader = ","
+nnoremap <SPACE> <Nop>
+let mapleader = " "
+let maplocalleader = " "
 
 " Move up/down editor lines
 nnoremap j gj
@@ -113,7 +115,11 @@ nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
-let mapleader=","
+
+nmap <leader>wh <C-W>h
+nmap <leader>wj <C-W>j
+nmap <leader>wk <C-W>k
+nmap <leader>wl <C-W>l
 
 " Insert newline without entering insert mode
 nmap <S-Enter> O<Esc>
@@ -136,14 +142,14 @@ set foldlevel=99
 nnoremap <C-space> za
 
 " Remap help key.
-inoremap <F1> <ESC>:set invfullscreen<CR>a
-nnoremap <F1> :set invfullscreen<CR>
-vnoremap <F1> :set invfullscreen<CR>
+" inoremap <F1> <ESC>:set invfullscreen<CR>a
+" nnoremap <F1> :set invfullscreen<CR>
+" vnoremap <F1> :set invfullscreen<CR>
 
 " Brace completion
-inoremap { {}<Esc>i
-inoremap ( ()<Esc>i
-inoremap [ []<Esc>i
+" inoremap { {}<Esc>i
+" inoremap ( ()<Esc>i
+" inoremap [ []<Esc>i
 
 " Formatting
 map <leader>q gqip
@@ -168,11 +174,8 @@ colorscheme koehler
 
 " ================= PLUGINS ===================
 
-" Load plugins here (pathogen or vundle)
-" set rtp+=~/.vim/autoload/plug.vim
 call plug#begin()
 
-Plug 'VundleVim/Vundle.vim'
 " Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -185,7 +188,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'othree/es.next.syntax.vim'
 Plug 'othree/jspc.vim'
 Plug 'plasticboy/vim-markdown'
-Plugin 'icymind/NeoSolarized' "dracula/vim'
+Plug 'icymind/NeoSolarized'
 Plug 'itchyny/lightline.vim'
 
 call plug#end()
@@ -221,6 +224,6 @@ let g:jedi#usages_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
 
 colorscheme NeoSolarized
-let g:lightline_theme= {
+let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ }
