@@ -126,10 +126,12 @@ nmap <silent> <A-Right> :wincmd l<CR>
 " [W]indows [J] Down
 " [W]indows [K] Up
 " [W]indows [L] Right
+" [W]indows [Q]uit
 nmap <leader>wh <C-W>h
 nmap <leader>wj <C-W>j
 nmap <leader>wk <C-W>k
 nmap <leader>wl <C-W>l
+nmap <leader>wq <C-W>q
 
 " [B]uffers [L]ist
 " [B]uffers [D]elete
@@ -161,9 +163,9 @@ nnoremap <F1> :set invfullscreen<CR>
 vnoremap <F1> :set invfullscreen<CR>
 
 " Brace completion
-" inoremap { {}<Esc>i
-" inoremap ( ()<Esc>i
-" inoremap [ []<Esc>i
+inoremap { {}<Esc>ha
+inoremap ( ()<Esc>ha
+inoremap [ []<Esc>ha
 
 " Formatting
 map <leader>q gqip
