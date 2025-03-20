@@ -30,9 +30,6 @@ set bs=2                " Allow backspacing over everything in insert mode
 set ai                  " Always set auto-indenting on
 set history=50          " keep 50 lines of command history
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
 " When doing tab completion, give the following files lower priority.
 set suffixes+=.info,.aux,.log,.dvi,.bbl,.out,.o,.lo
 autocmd BufRead APKBUILD set filetype=sh
@@ -62,8 +59,14 @@ set splitright
 set list         " Uncomment this to enable by default:
 set noshowmode
 
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+set showmatch
+
 " Visualize tabs and newlines
-set listchars=tab:▸\ ,eol:¬
+"set listchars=tab:▸\ ,eol:¬
 
 " This will enable
 " - Use ^] to jump to tag under cursor
@@ -109,17 +112,33 @@ let maplocalleader = " "
 " Move up/down editor lines
 nnoremap j gj
 nnoremap k gk
+
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
+
+" Window rotations
 nmap <silent> <A-Up> :wincmd k<CR>
 nmap <silent> <A-Down> :wincmd j<CR>
 nmap <silent> <A-Left> :wincmd h<CR>
 nmap <silent> <A-Right> :wincmd l<CR>
 
+" [W]indows [H] Left
+" [W]indows [J] Down
+" [W]indows [K] Up
+" [W]indows [L] Right
 nmap <leader>wh <C-W>h
 nmap <leader>wj <C-W>j
 nmap <leader>wk <C-W>k
 nmap <leader>wl <C-W>l
+
+" [B]uffers [L]ist
+" [B]uffers [D]elete
+" [B]uffers [N]ext
+" [B]uffers [P]revious
+nmap <leader>bl :buffers<CR>
+nmap <leader>bd :bdelete<CR>
+nmap <leader>bn :bNext<CR>
+nmap <leader>bp :bprevious<CR>
 
 " Insert newline without entering insert mode
 nmap <S-Enter> O<Esc>
@@ -128,11 +147,6 @@ nmap <CR> o<Esc>
 " Searching
 nnoremap / /\v
 vnoremap / /\v
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set showmatch
 map <leader><space> :let @/=''<cr> " clear search
 nnoremap <F3> :set hlsearch!<CR>
 
@@ -142,9 +156,9 @@ set foldlevel=99
 nnoremap <C-space> za
 
 " Remap help key.
-" inoremap <F1> <ESC>:set invfullscreen<CR>a
-" nnoremap <F1> :set invfullscreen<CR>
-" vnoremap <F1> :set invfullscreen<CR>
+inoremap <F1> <ESC>:set invfullscreen<CR>a
+nnoremap <F1> :set invfullscreen<CR>
+vnoremap <F1> :set invfullscreen<CR>
 
 " Brace completion
 " inoremap { {}<Esc>i
@@ -153,6 +167,8 @@ nnoremap <C-space> za
 
 " Formatting
 map <leader>q gqip
+" Don't use Ex mode, use Q for formatting
+map Q gq
 
 " Remap ^] to ^ä
 map <C-ä> <C-]> 
